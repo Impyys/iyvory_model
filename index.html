@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Iyvoru Live2D</title>
 
 <style>
-html, body {
+
+html, body{
 margin:0;
 padding:0;
 overflow:hidden;
+background:transparent;
 }
 
 canvas{
@@ -16,11 +21,12 @@ position:absolute;
 width:100%;
 height:100%;
 }
+
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.8/browser/pixi.min.js"></script>
 <script src="./live2dcubismcore.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
 
 </head>
 
@@ -35,7 +41,7 @@ backgroundAlpha: 0
 
 document.body.appendChild(app.view);
 
-(async () => {
+(async function(){
 
 const model = await PIXI.live2d.Live2DModel.from("./iyvoru.model3.json");
 
@@ -43,14 +49,17 @@ model.anchor.set(0.5,0.5);
 
 /* RESPONSIVE SCALE */
 
-let scale = 0.18;
+let scale;
+const screenWidth = window.screen.width;
 
-if(window.innerWidth < 768){
-scale = 0.14;
+if(screenWidth < 480){
+scale = 0.11;
 }
-
-if(window.innerWidth < 480){
-scale = 0.12;
+else if(screenWidth < 900){
+scale = 0.15;
+}
+else{
+scale = 0.20;
 }
 
 model.scale.set(scale);
@@ -62,23 +71,40 @@ model.y = window.innerHeight / 2 + 120;
 
 app.stage.addChild(model);
 
-/* MOUSE TRACKING */
+/* MOVEMENT TRACKING */
 
-window.addEventListener("mousemove", e => {
+function moveModel(x,y){
 
-const mouseX = (e.clientX / window.innerWidth - 0.5) * 30;
-const mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
+const mouseX = (x / window.innerWidth - 0.5) * 60;
+const mouseY = (y / window.innerHeight - 0.5) * 60;
 
 const core = model.internalModel.coreModel;
 
-core.setParameterValueById("ParamAngleX", mouseX);
-core.setParameterValueById("ParamAngleY", -mouseY);
+/* HEAD (FaceAngleX/Y/Z) */
 
-core.setParameterValueById("ParamBodyAngleX", mouseX * 0.3);
-core.setParameterValueById("ParamBodyAngleY", mouseY * 0.3);
+core.setParameterValueById("ParamAngleX", mouseX * 0.5);
+core.setParameterValueById("ParamAngleY", -mouseY * 0.6);
+core.setParameterValueById("ParamAngleZ", mouseX * 0.25);
 
-core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.15);
+/* BODY */
 
+core.setParameterValueById("ParamBodyAngleX", mouseX * 0.15);
+core.setParameterValueById("ParamBodyAngleY", mouseY * 0.20);
+core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.10);
+
+}
+
+/* DESKTOP CURSOR */
+
+window.addEventListener("mousemove", e=>{
+moveModel(e.clientX,e.clientY);
+});
+
+/* MOBILE TOUCH */
+
+window.addEventListener("touchmove", e=>{
+const touch = e.touches[0];
+moveModel(touch.clientX,touch.clientY);
 });
 
 })();
@@ -86,4 +112,5 @@ core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.15);
 </script>
 
 </body>
+
 </html>
