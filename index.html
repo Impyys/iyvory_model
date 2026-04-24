@@ -84,7 +84,7 @@ let bodyX = 0;
 let bodyY = 0;
 
 const headSmooth = 0.15;
-const bodySmooth = 0.15;
+const bodySmooth = 0.07;
 
 app.ticker.add(()=>{
 
@@ -106,7 +106,12 @@ core.setParameterValueById("ParamAngleY", -headY * 25);
 core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
 core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
 
+/* GLASSES ALWAYS ON */
+
+core.setParameterValueById("GlassesOn", 1);
+
 });
+
 
 /* CURSOR TRACKING */
 
@@ -120,6 +125,7 @@ targetY = (y / window.innerHeight - 0.5);
 window.addEventListener("mousemove", e=>{
 moveModel(e.clientX,e.clientY);
 });
+
 
 /* MOBILE TOUCH */
 
