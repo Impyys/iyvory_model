@@ -39,19 +39,30 @@ document.body.appendChild(app.view);
 
 const model = await PIXI.live2d.Live2DModel.from("./iyvoru.model3.json");
 
-/* CENTER anchor instead of bottom */
 model.anchor.set(0.5,0.5);
 
-/* model size */
-model.scale.set(0.18);
+/* RESPONSIVE SCALE */
 
-/* perfect center position */
+let scale = 0.18;
+
+if(window.innerWidth < 768){
+scale = 0.14;
+}
+
+if(window.innerWidth < 480){
+scale = 0.12;
+}
+
+model.scale.set(scale);
+
+/* POSITION */
+
 model.x = window.innerWidth / 2;
 model.y = window.innerHeight / 2 + 120;
 
 app.stage.addChild(model);
 
-/* mouse tracking */
+/* MOUSE TRACKING */
 
 window.addEventListener("mousemove", e => {
 
