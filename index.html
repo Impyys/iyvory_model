@@ -8,8 +8,8 @@
 body{
 margin:0;
 overflow:hidden;
-background:#111;
 }
+
 canvas{
 position:absolute;
 width:100vw;
@@ -38,16 +38,39 @@ document.body.appendChild(app.view);
 
 const model = await PIXI.live2d.Live2DModel.from("./iyvoru.model3.json");
 
+/* anchor bottom center */
 model.anchor.set(0.5,1);
 
-/* SCALE FIX */
-model.scale.set(0.12);
+/* SIZE */
+model.scale.set(0.28);
 
-/* POSITION FIX */
+/* POSITION */
 model.x = window.innerWidth / 2;
-model.y = window.innerHeight * 0.95;
+model.y = window.innerHeight * 0.92;
 
 app.stage.addChild(model);
+
+/* MOUSE TRACKING */
+
+window.addEventListener("mousemove", e => {
+
+const mouseX = (e.clientX / window.innerWidth - 0.5) * 30;
+const mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
+
+const core = model.internalModel.coreModel;
+
+/* HEAD */
+core.setParameterValueById("ParamAngleX", mouseX);
+core.setParameterValueById("ParamAngleY", -mouseY);
+
+/* BODY */
+core.setParameterValueById("ParamBodyAngleX", mouseX * 0.3);
+core.setParameterValueById("ParamBodyAngleY", mouseY * 0.3);
+
+/* BODY TWIST */
+core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.15);
+
+});
 
 })();
 
