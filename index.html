@@ -71,30 +71,54 @@ model.y = window.innerHeight / 2 + 120;
 
 app.stage.addChild(model);
 
-/* MOVEMENT TRACKING */
+/* SMOOTH MOVEMENT SYSTEM */
 
-function moveModel(x,y){
+let targetX = 0;
+let targetY = 0;
 
-const mouseX = (x / window.innerWidth - 0.5) * 60;
-const mouseY = (y / window.innerHeight - 0.5) * 60;
+let headX = 0;
+let headY = 0;
+
+let bodyX = 0;
+let bodyY = 0;
+
+/* smoothing speeds */
+
+const headSmooth = 0.15;
+const bodySmooth = 0.08;
+
+app.ticker.add(()=>{
+
+headX += (targetX - headX) * headSmooth;
+headY += (targetY - headY) * headSmooth;
+
+bodyX += (headX - bodyX) * bodySmooth;
+bodyY += (headY - bodyY) * bodySmooth;
 
 const core = model.internalModel.coreModel;
 
-/* HEAD (FaceAngleX/Y/Z) */
+/* HEAD */
 
-core.setParameterValueById("ParamAngleX", mouseX * 0.5);
-core.setParameterValueById("ParamAngleY", -mouseY * 0.6);
-core.setParameterValueById("ParamAngleZ", mouseX * 0.25);
+core.setParameterValueById("ParamAngleX", headX * 30);
+core.setParameterValueById("ParamAngleY", -headY * 30);
+core.setParameterValueById("ParamAngleZ", headX * 10);
 
 /* BODY */
 
-core.setParameterValueById("ParamBodyAngleX", mouseX * 0.15);
-core.setParameterValueById("ParamBodyAngleY", mouseY * 0.20);
-core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.10);
+core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
+core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
+core.setParameterValueById("ParamBodyAngleZ", bodyX * 5);
+
+});
+
+/* CURSOR TRACKING */
+
+function moveModel(x,y){
+
+targetX = (x / window.innerWidth - 0.5);
+targetY = (y / window.innerHeight - 0.5);
 
 }
-
-/* DESKTOP CURSOR */
 
 window.addEventListener("mousemove", e=>{
 moveModel(e.clientX,e.clientY);
