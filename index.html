@@ -72,7 +72,9 @@ model.y = window.innerHeight / 2 + 120;
 app.stage.addChild(model);
 
 
-/* SMOOTH MOVEMENT SYSTEM */
+/* DRAG SYSTEM */
+
+let dragging = false;
 
 let targetX = 0;
 let targetY = 0;
@@ -100,11 +102,13 @@ const core = model.internalModel.coreModel;
 
 core.setParameterValueById("ParamAngleX", headX * 30);
 core.setParameterValueById("ParamAngleY", -headY * 30);
+core.setParameterValueById("ParamAngleZ", headX * 12);
 
 /* BODY */
 
 core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
 core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
+core.setParameterValueById("ParamBodyAngleZ", bodyX * 6);
 
 /* HOOD ALWAYS ON */
 
@@ -113,25 +117,54 @@ core.setParameterValueById("HoodCapON", 1);
 });
 
 
-/* CURSOR TRACKING */
+/* DRAG INPUT */
 
-function moveModel(x,y){
+function updateTarget(x,y){
 
 targetX = (x / window.innerWidth - 0.5);
 targetY = (y / window.innerHeight - 0.5);
 
 }
 
+
+/* DESKTOP DRAG */
+
+window.addEventListener("mousedown", ()=>{
+dragging = true;
+});
+
+window.addEventListener("mouseup", ()=>{
+dragging = false;
+});
+
 window.addEventListener("mousemove", e=>{
-moveModel(e.clientX,e.clientY);
+
+if(dragging){
+updateTarget(e.clientX,e.clientY);
+}
+
 });
 
 
-/* MOBILE TOUCH */
+/* MOBILE TOUCH DRAG */
+
+window.addEventListener("touchstart", ()=>{
+dragging = true;
+});
+
+window.addEventListener("touchend", ()=>{
+dragging = false;
+});
 
 window.addEventListener("touchmove", e=>{
+
+if(dragging){
+
 const touch = e.touches[0];
-moveModel(touch.clientX,touch.clientY);
+updateTarget(touch.clientX,touch.clientY);
+
+}
+
 });
 
 })();
