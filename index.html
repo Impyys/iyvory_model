@@ -100,7 +100,7 @@ const core = model.internalModel.coreModel;
 
 core.setParameterValueById("ParamAngleX", headX * 30);
 core.setParameterValueById("ParamAngleY", -headY * 30);
-core.setParameterValueById("ParamAngleZ", -headz * 30);
+core.setParameterValueById("ParamAngleZ", headX * 10);
 
 /* BODY */
 
@@ -108,14 +108,14 @@ core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
 core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
 core.setParameterValueById("ParamBodyAngleZ", bodyX * 10);
 
-/* HOOD ON */
+/* HOOD ALWAYS ON */
 
 core.setParameterValueById("HoodCapON", 1);
 
 });
 
 
-/* DRAG CONTROL SYSTEM */
+/* DRAG CONTROL */
 
 let dragging = false;
 
@@ -125,6 +125,7 @@ targetX = (x / window.innerWidth - 0.5);
 targetY = (y / window.innerHeight - 0.5);
 
 }
+
 
 /* DESKTOP */
 
