@@ -71,6 +71,7 @@ model.y = window.innerHeight / 2 + 120;
 
 app.stage.addChild(model);
 
+
 /* SMOOTH MOVEMENT SYSTEM */
 
 let targetX = 0;
@@ -82,10 +83,8 @@ let headY = 0;
 let bodyX = 0;
 let bodyY = 0;
 
-/* smoothing speeds */
-
 const headSmooth = 0.15;
-const bodySmooth = 0.08;
+const bodySmooth = 0.07;
 
 app.ticker.add(()=>{
 
@@ -101,13 +100,11 @@ const core = model.internalModel.coreModel;
 
 core.setParameterValueById("ParamAngleX", headX * 30);
 core.setParameterValueById("ParamAngleY", -headY * 30);
-core.setParameterValueById("ParamAngleZ", headX * 10);
 
 /* BODY */
 
 core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
 core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
-core.setParameterValueById("ParamBodyAngleZ", bodyX * 5);
 
 });
 
