@@ -84,7 +84,7 @@ let bodyX = 0;
 let bodyY = 0;
 
 const headSmooth = 0.15;
-const bodySmooth = 0.07;
+const bodySmooth = 0.15;
 
 app.ticker.add(()=>{
 
@@ -98,13 +98,13 @@ const core = model.internalModel.coreModel;
 
 /* HEAD */
 
-core.setParameterValueById("ParamAngleX", headX * 30);
-core.setParameterValueById("ParamAngleY", -headY * 30);
+core.setParameterValueById("ParamAngleX", headX * 25);
+core.setParameterValueById("ParamAngleY", -headY * 25);
 
 /* BODY */
 
-core.setParameterValueById("ParamBodyAngleX", bodyX * 11);
-core.setParameterValueById("ParamBodyAngleY", bodyY * 20);
+core.setParameterValueById("ParamBodyAngleX", bodyX * 10);
+core.setParameterValueById("ParamBodyAngleY", bodyY * 10);
 
 });
 
