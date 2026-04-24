@@ -5,16 +5,17 @@
 <title>Iyvoru Live2D</title>
 
 <style>
-body{
+html, body {
 margin:0;
+padding:0;
 overflow:hidden;
 background:transparent;
 }
 
 canvas{
 position:absolute;
-width:100vw;
-height:100vh;
+width:100%;
+height:100%;
 }
 </style>
 
@@ -39,15 +40,21 @@ document.body.appendChild(app.view);
 
 const model = await PIXI.live2d.Live2DModel.from("./iyvoru.model3.json");
 
+/* anchor bottom center */
 model.anchor.set(0.5,1);
 
-/* SMALLER SIZE */
-model.scale.set(0.20);
+/* model size */
+model.scale.set(0.18);
 
+/* position center */
 model.x = window.innerWidth / 2;
-model.y = window.innerHeight * 0.92;
+
+/* move slightly up so head isn't cut */
+model.y = window.innerHeight * 0.87;
 
 app.stage.addChild(model);
+
+/* mouse tracking */
 
 window.addEventListener("mousemove", e => {
 
@@ -56,12 +63,15 @@ const mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
 
 const core = model.internalModel.coreModel;
 
+/* head movement */
 core.setParameterValueById("ParamAngleX", mouseX);
 core.setParameterValueById("ParamAngleY", -mouseY);
 
+/* body movement */
 core.setParameterValueById("ParamBodyAngleX", mouseX * 0.3);
 core.setParameterValueById("ParamBodyAngleY", mouseY * 0.3);
 
+/* body twist */
 core.setParameterValueById("ParamBodyAngleZ", mouseX * 0.15);
 
 });
